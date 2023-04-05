@@ -1,8 +1,16 @@
 import { BsFillCartCheckFill } from "react-icons/bs";
 import "./CartWidget.css";
-import { Link } from "react-router-dom";
 
-const CartWidget = ({ numero }) => {
+import { useContext } from "react";
+
+import { Link } from "react-router-dom";
+import { CartContext } from "../../context/CartContext";
+
+const CartWidget = () => {
+  const { getTotalQuantity } = useContext(CartContext);
+
+  const total = getTotalQuantity();
+
   return (
     <Link to="/cart">
       <div className="container-cart">
@@ -13,7 +21,7 @@ const CartWidget = ({ numero }) => {
           }}
         />
         <div className="bubble-counter">
-          <span>0</span>
+          <span>{total}</span>
         </div>
       </div>
     </Link>

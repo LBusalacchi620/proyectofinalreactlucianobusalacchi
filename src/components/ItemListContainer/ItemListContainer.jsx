@@ -22,7 +22,7 @@ const ItemListContainer = () => {
         console.log(error);
       });
   }, [categoryName]);
-  console.log(items);
+  // console.log(items);
 
   return (
     <div>

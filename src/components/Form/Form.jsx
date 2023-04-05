@@ -1,6 +1,4 @@
 import { useState } from "react";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
 
 const Form = () => {
   const [userData, setUserData] = useState({
@@ -16,9 +14,12 @@ const Form = () => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
 
+  // name ---> min 5 caracteres
+  // email ---> contenga un @
+  // password ---> que no tenga espacios en blanco ( "123") y mayor a 4
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    setError(false);
 
     // VALIDACIONES
     if (userData.name.length < 5) {
@@ -46,35 +47,32 @@ const Form = () => {
       return;
     }
 
+    // INSTRUCCION
     console.log(userData);
+    // axios.post("elendpoint", userData)
+    // axios.patch("elendpoint", { email: userData.email })
   };
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <TextField
-          id="outlined-password-input"
-          label="nombre"
-          type="name"
-          autoComplete="Luciano"
+        <input
+          type="text"
+          placeholder="ingrese su nombre"
           onChange={handleChange}
           name="name"
         />
-        <TextField
-          id="outlined-password-input"
-          label="email"
-          type="email"
-          autoComplete="lucianobusalacchi@gmail.com"
-          onChange={handleChange}
+        <input
+          type="text"
+          placeholder="Ingrese su email"
           name="email"
-        />
-        <TextField
-          id="outlined-password-input"
-          label="password"
-          type="pasword"
-          autoComplete=""
           onChange={handleChange}
+        />
+        <input
+          type="text"
+          placeholder="ingrese su contraseña"
           name="password"
+          onChange={handleChange}
         />
         <button type="submit">Enviar</button>
       </form>
