@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { products } from "../../productsMock";
 import ItemList from "../ItemList/ItemList";
+import RingLoader from "react-spinners/RingLoader";
 
 const ItemListContainer = () => {
   const { categoryName } = useParams();
@@ -12,7 +13,9 @@ const ItemListContainer = () => {
 
   useEffect(() => {
     const productList = new Promise((resolve, reject) => {
-      resolve(categoryName ? productosFiltrados : products);
+      setTimeout(() => {
+        resolve(categoryName ? productosFiltrados : products);
+      }, 2000);
     });
     productList
       .then((res) => {
@@ -22,7 +25,21 @@ const ItemListContainer = () => {
         console.log(error);
       });
   }, [categoryName]);
-  // console.log(items);
+
+  if (items.length === 0) {
+    return (
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <RingLoader
+          color={"blue"}
+          // loading={loading}
+          // cssOverride={override}
+          size={150}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );
+  }
 
   return (
     <div>
