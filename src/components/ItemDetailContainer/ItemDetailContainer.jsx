@@ -1,36 +1,58 @@
-import { useState, useEffect } from "react";
+import React, { useContext } from "react";
+
 import { useParams } from "react-router-dom";
+import { CartContext } from "../../contex/CartContex";
+
 import { products } from "../../productsMock";
-import ItemList from "../ItemList/ItemList";
+import ItemCount from "../ItemCount/ItemCount";
+import "./ItemDetail.css";
 
-const ItemListContainer = () => {
-  const { categoryName } = useParams();
+const ItemDetailContainer = () => {
+  const { id } = useParams();
 
-  const [items, setItems] = useState([]);
+  const { agregarAlCarrito, getQuantityById } = useContext(CartContext);
 
-  const productosFiltrados = products.filter(
-    (elemento) => elemento.category === categoryName
-  );
+  const productSelected = products.find((element) => element.id === Number(id));
 
-  useEffect(() => {
-    const productList = new Promise((resolve, reject) => {
-      resolve(categoryName ? productosFiltrados : products);
-    });
+  const onAdd = (cantidad) => {
+    let producto = {
+      ...productSelected,
+      quantity: cantidad,
+    };
 
-    productList
-      .then((res) => {
-        setItems(res);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [categoryName]);
+    agregarAlCarrito(producto);
+  };
+  let quantity = getQuantityById(Number(id));
+  console.log(quantity);
 
   return (
-    <div>
-      <ItemList items={items} />
+    <div className={"containerItemDetail"}>
+      <div className={"containerImage"}>
+        <img src={productSelected.img} alt="" />
+      </div>
+
+      <div className={"containerDetail"}>
+        <h2 style={{ fontFamily: "monospace" }}>
+          <span style={{ fontSize: "23px" }}>Nombre:</span>{" "}
+          {productSelected.title}
+        </h2>
+        <h2 style={{ fontFamily: "monospace" }}>
+          <span style={{ fontSize: "23px" }}>Descripcion:</span>{" "}
+          {productSelected.description}
+        </h2>
+        <h2 style={{ fontFamily: "monospace" }}>
+          <span style={{ fontSize: "23px" }}>Precio:</span> $
+          {productSelected.price}.-
+        </h2>
+
+        <ItemCount
+          onAdd={onAdd}
+          stock={productSelected.stock}
+          initial={quantity}
+        />
+      </div>
     </div>
   );
 };
 
-export default ItemListContainer;
+export default ItemDetailContainer;
