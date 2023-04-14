@@ -10,17 +10,17 @@ const Cart = () => {
 
   const clear = () => {
     Swal.fire({
-      title: "Seguro que quieres vaciar el carrito?",
+      title: "Confirme que quiere vaciar el carrito",
       showDenyButton: true,
       showCancelButton: true,
-      confirmButtonText: "Si, vaciar",
+      confirmButtonText: "Sí, confirmo",
       denyButtonText: `No, no vaciar`,
     }).then((result) => {
       if (result.isConfirmed) {
         clearCart();
         Swal.fire("Carrito vaciado exitosamente", "", "success");
       } else if (result.isDenied) {
-        Swal.fire("El carrito queda como estaba", "", "info");
+        Swal.fire("Usted decidió no vaciar el carrito", "", "info");
       }
     });
   };

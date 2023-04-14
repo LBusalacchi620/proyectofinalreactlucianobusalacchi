@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { products } from "../../productsMock";
 import ItemList from "../ItemList/ItemList";
 import RingLoader from "react-spinners/RingLoader";
+import { db } from "../../firebaseConfig";
+import { collection, getDocs } from "firebase/firestore";
 
 const ItemListContainer = () => {
   const { categoryName } = useParams();
@@ -12,18 +14,16 @@ const ItemListContainer = () => {
   );
 
   useEffect(() => {
-    const productList = new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(categoryName ? productosFiltrados : products);
-      }, 2000);
-    });
-    productList
-      .then((res) => {
-        setItems(res);
-      })
-      .catch((error) => {
-        console.log(error);
+    const itemsCollection = collection(db, "products");
+    getDocs(itemsCollection).then((res) => {
+      let products = res.docs.map((product) => {
+        return {
+          ...product.data(),
+          id: product.id,
+        };
       });
+      setItems(products);
+    });
   }, [categoryName]);
 
   if (items.length === 0) {
@@ -31,8 +31,6 @@ const ItemListContainer = () => {
       <div style={{ display: "flex", justifyContent: "center" }}>
         <RingLoader
           color={"blue"}
-          // loading={loading}
-          // cssOverride={override}
           size={150}
           aria-label="Loading Spinner"
           data-testid="loader"
