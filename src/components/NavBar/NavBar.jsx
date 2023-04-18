@@ -3,8 +3,24 @@ import CardWidget from "../CardWidget/CardWidget";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { collection, getDoc, getDocs } from "firebase/firestore";
+import { db } from "../../firebaseConfig";
 
 const Navbar = ({ children }) => {
+  const [categoryList, setCategoryList] = useState([]);
+  useEffect(() => {
+    const itemsCollection = collection(db, "categories");
+    getDocs(itemsCollection).then((res) => {
+      let arrayCategories = res.docs.map((category) => {
+        return {
+          ...category.data(),
+          id: category.id,
+        };
+      });
+      setCategoryList(arrayCategories);
+    });
+  }, []);
   return (
     <div>
       <div className={styles.containerNavbar}>
@@ -16,26 +32,17 @@ const Navbar = ({ children }) => {
           />
         </Link>
         <ul className={styles.containerList}>
-          <li>
-            <Link to="/">
-              <Button variant="Text">Todas</Button>
-            </Link>
-          </li>
-          <li>
-            <Link to="/category/cocina">
-              <Button variant="Text">Cocina</Button>
-            </Link>
-          </li>
-          <li>
-            <Link to="/category/lacteos">
-              <Button variant="Text">Lacteos</Button>
-            </Link>
-          </li>
-          <li>
-            <Link to="/category/bebidas">
-              <Button variant="Text">Bebidas</Button>
-            </Link>
-          </li>
+          {categoryList.map((category) => {
+            return (
+              <Link
+                key={category.id}
+                to={category.path}
+                className={styles.navbarItem}
+              >
+                {category.title}
+              </Link>
+            );
+          })}
         </ul>
         <CardWidget />
       </div>
