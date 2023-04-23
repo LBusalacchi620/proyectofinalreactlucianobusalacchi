@@ -1,10 +1,9 @@
 import styles from "./NavBar.module.css";
 import CardWidget from "../CardWidget/CardWidget";
-import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
+
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { collection, getDoc, getDocs } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebaseConfig";
 
 const Navbar = ({ children }) => {
