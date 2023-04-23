@@ -27,7 +27,7 @@ const Navbar = ({ children }) => {
           <img
             src="https://res.cloudinary.com/dxf8ebmi7/image/upload/v1677416673/v83ljquhstuhe6zv8zih.png"
             alt="Logo Diarco"
-            style={{ width: "10%", objectFit: "cover", height: "5vh" }}
+            style={{ width: "100%", objectFit: "cover", height: "10vh" }}
           />
         </Link>
         <ul className={styles.containerList}>
